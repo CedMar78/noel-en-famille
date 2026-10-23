@@ -329,10 +329,10 @@ registerButton.addEventListener("click", async function () {
         .single();
 
 if (error) {
-    console.error(
-        "Erreur création du membre :",
-        error
-    );
+    console.error("Erreur création du membre :", error);
+
+    const registerError =
+        document.getElementById("registerError");
 
     const drawIsLocked =
         error.code === "P0001" &&
@@ -340,19 +340,13 @@ if (error) {
             "les inscriptions et les couples sont verrouillés"
         );
 
-    if (drawIsLocked) {
-        alert(
-            "Les inscriptions sont fermées : le tirage a déjà eu lieu.\n\n" +
-            "Si tu es déjà inscrit, utilise le navigateur et l’adresse du site " +
-            "utilisés lors de ton inscription."
-        );
-    } else {
-        alert(
-            "Ton inscription n’a pas pu être enregistrée. " +
-            "Réessaie dans un instant. Si le problème persiste, " +
-            "contacte l’organisateur."
-        );
-    }
+    registerError.textContent = drawIsLocked
+        ? "Les inscriptions sont fermées : le tirage a déjà eu lieu. " +
+          "Si tu es déjà inscrit, retrouve ton inscription depuis " +
+          "le navigateur et l’adresse du site utilisés au départ."
+        : "Impossible d’enregistrer ton inscription. Réessaie dans un instant.";
+
+    registerError.classList.remove("hidden");
 
     return;
 }
