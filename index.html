@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+
+        <meta 
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+        >
+        <title>Noël en Famille</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500;600&display=swap"
+        rel="stylesheet"
+        >
+        <link rel="stylesheet" href="css/style.css">
+            </head>
+    
+    <body>
+        <main>
+            <section class="hero">
+                 <p class="hero__icon">🎄</p>
+                 <h1>Noël en Famille</h1>
+                 <p class="hero__subtitle">
+                    Le plaisir de recevoir commence par celui de donner ❤️
+                    
+                </p>
+
+                <button 
+                class="hero__button"
+                id="joinButton">
+                    Rejoindre ma Famille
+                </button>
+
+            </section>
+            <section class="join hidden">
+                <p class="join__icon">🎁</p>
+                <h2>Rejoindre ma Famille</h2>
+                <p class="join__text">
+                    Entre le code d'invitation que tu as recu.
+                    </p>
+                    <input 
+                        class="join__input"
+                        id="familyCode"
+                        type="text"
+                        >
+                <p class="join__error hidden"
+                    id="codeError"
+                    > 
+                Code d'invitation incorrect. 
+            </p>        
+                    <button 
+                        class="join__button"
+                        id="continueButton"
+                        type="button"
+                        >
+                    Continuer
+                </button>
+
+                <button
+                        class="join__back"
+                        id="backButton"
+                        type="button"
+
+                    >
+
+                    ← Retour
+
+                </button>  
+
+            </section>
+
+            <section class="register hidden">
+
+    <p class="register__icon">✨</p>
+
+    <h2>Bienvenue !</h2>
+
+    <p class="register__text">
+        Présente-toi pour rejoindre la famille.
+    </p>
+
+    <input
+        class="register__input"
+        id="firstName"
+        type="text"
+        placeholder="Ton prénom"
+    >
+
+    <button
+        class="register__button"
+        id="registerButton"
+        type="button"
+    >
+        Continuer
+    </button>
+
+</section>
+
+<section class="wishes hidden">
+
+    <p class="wishes__icon">🎁</p>
+
+    <h2 id="wishesTitle">Tes idées cadeaux</h2>
+
+    <p class="wishes__text">
+        Ajoute jusqu'à 3 idées pour aider ton Secret Santa.
+    </p>
+
+    <input
+        class="wishes__input"
+        id="wish1"
+        type="text"
+        placeholder="Idée cadeau n°1"
+    >
+
+    <input
+        class="wishes__input"
+        id="wish2"
+        type="text"
+        placeholder="Idée cadeau n°2"
+    >
+
+    <input
+        class="wishes__input"
+        id="wish3"
+        type="text"
+        placeholder="Idée cadeau n°3"
+    >
+
+    <p
+    class="wishes__error hidden"
+    id="wishesError"
+>
+    Ajoute au moins 2 idées cadeaux.
+</p>
+
+    <button
+        class="wishes__button"
+        id="saveWishesButton"
+        type="button"
+    >
+        Enregistrer mes idées
+    </button>
+
+</section>
+
+<section class="partner hidden">
+
+    <p class="partner__icon">❤️</p>
+
+    <h2>Et côté couple ?</h2>
+
+    <p class="partner__text">
+        Participes-tu avec ton conjoint ou ta conjointe ?
+    </p>
+
+    <button
+        class="partner__button"
+        id="partnerYesButton"
+        type="button"
+    >
+        Oui
+    </button>
+
+    <button
+        class="partner__button partner__button--secondary"
+        id="partnerNoButton"
+        type="button"
+    >
+        Non
+    </button>
+
+    <div id="partnerSelection" class="hidden">
+
+    <label for="partnerSelect">
+        Avec qui participes-tu ?
+    </label>
+
+    <select id="partnerSelect" disabled>
+        <option value="">Choisis ton conjoint ou ta conjointe</option>
+    </select>
+
+    <button
+    class="partner__button"
+    id="savePartnerButton"
+    type="button"
+>
+    Confirmer mon conjoint
+</button>
+
+    <p>
+        Ton conjoint ou ta conjointe doit rejoindre ce groupe
+        pour apparaître dans la liste.
+    </p>
+
+</div>
+
+</section>
+
+<section class="summary hidden">
+
+    <p class="summary__icon">🎄</p>
+
+    <h2>Ton inscription</h2>
+
+    <p class="summary__group" id="summaryGroup"></p>
+
+    <p class="summary__text">
+        Tout est prêt !
+    </p>
+
+    <p>
+        <strong>Prénom :</strong>
+        <span id="summaryName"></span>
+    </p>
+
+    <p>
+        <strong>Tes idées cadeaux :</strong>
+    </p>
+
+    <ul id="summaryWishes"></ul>
+
+    <p>
+        <strong>Conjoint participant :</strong>
+        <span id="summaryPartner"></span>
+    </p>
+
+    <div id="organizerDashboard" class="hidden">
+
+    <h3>Les inscriptions du groupe 👨‍👩‍👧‍👦</h3>
+
+    <p id="registrationOverview" role="status"></p>
+
+    <ul id="registrationList"></ul>
+
+</div>
+    <div id="organizerPanel" class="hidden">
+
+    <h3>Espace organisateur</h3>
+
+    <p>
+        Lance le tirage lorsque toutes les inscriptions
+        du groupe sont terminées.
+    </p>
+
+    <button
+        class="partner__button"
+        id="drawGroupButton"
+        type="button"
+        disabled
+    >
+        Lancer le tirage
+    </button>
+
+</div>
+
+<p id="drawStatus" role="status" aria-live="polite"></p>
+
+<button
+    class="join__back"
+    id="refreshDrawStatusButton"
+    type="button"
+>
+    ↻ Actualiser le tirage
+</button>
+
+<label>
+    <input id="christmasSoundEnabled" type="checkbox" checked>
+    Clochettes de Noël 🔔
+</label>
+
+<div id="revealPanel" class="hidden">
+
+    <h3>La surprise t’attend… 🎁</h3>
+
+    <p>
+        Tourne ta roue pour découvrir les deux personnes
+        que tu vas gâter cette année.
+    </p>
+
+<div class="reveal__stage" aria-hidden="true">
+
+    <div class="reveal__wheel" id="revealWheel">
+        <span class="reveal__center">🎁</span>
+    </div>
+
+</div>
+
+    <button
+        class="partner__button"
+        id="revealButton"
+        type="button"
+        disabled
+    >
+        Tourner ma roue
+    </button>
+
+    <p id="revealStatus" role="status" aria-live="polite"></p>
+
+</div>
+
+
+<div id="drawResults" class="hidden">
+
+    <h3>À toi de gâter… 🎁</h3>
+
+    <p id="giftResultsStatus" role="status"></p>
+
+    <div id="giftRecipients"></div>
+
+    <button
+    class="partner__button"
+    id="previewChristmasSound"
+    type="button"
+>
+    Rejouer la magie de Noël ✨
+</button>
+
+</div>
+
+</section>
+
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/app.js"></script>
+        
+    </body>
+
+
+</html>

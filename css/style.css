@@ -1,0 +1,516 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body {
+    min-height: 100vh;
+    font-family:"Montserrat", sans-serif;
+    background: linear-gradient(135deg, #0b3d2e, #145a32);
+    color: white;
+
+}
+
+h1 {font-family: "Cinzel", serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    
+}
+.hero__icon {
+        font-size: 4rem;
+    }
+
+
+main {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.hero,
+.join,
+.register,
+.wishes,
+.partner,
+.summary
+
+{
+    width: 90%;
+    max-width: 700px;
+
+    padding: 3rem 2rem;
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.hero__icon { font-size: 4rem;
+margin-bottom: 1rem;
+}
+
+.hero__subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.hero__button,
+.join__button,
+.register__button,
+.wishes__button,
+.partner__button
+ {
+    padding: 1rem 2rem;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: #a4161a;
+    border: 2px solid #d4af37;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.hero__button:hover,
+.join__button:hover,
+.register__button:hover, 
+.wishes__button:hover,
+.partner__button:hover
+{
+    background: #c71f25;
+    transform: translateY(-3px);
+}
+
+.partner__button--secondary {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.4);
+
+    margin-left: 1rem;
+}
+
+.partner__button--secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.join__error,
+.wishes__error {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffd6d6;
+}
+
+.wishes h2 {
+    font-family: "Cinzel", serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.wishes__text {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.wishes__input {
+    display: block;
+
+    width: 100%;
+    max-width: 420px;
+
+    padding: 1rem;
+    margin: 0 auto 1rem;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 1rem;
+
+    text-align: center;
+
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+
+    outline: none;
+}
+
+.wishes__input:focus {
+    border-color: #d4af37;
+}
+
+.summary__icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.summary h2 {
+    font-family: "Cinzel", serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.summary__text {
+    margin-bottom: 1.5rem;
+}
+
+.summary ul {
+    margin: 1rem 0;
+    list-style-position: inside;
+}
+
+.hidden {
+    display: none;
+
+}
+
+.join__icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.join h2 {
+    font-family: "Cinzel", serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.join__text {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.join__input {
+    width: 100%;
+    max-width: 360px;
+
+    padding: 1rem;
+
+    margin-bottom: 1rem;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 1rem;
+
+    text-align: center;
+
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+
+    outline: none;
+}
+
+.join__input:focus {
+    border-color: #d4af37;
+
+}
+
+.join__back {
+    display: block;
+
+    margin: 1.5rem auto 0;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.9rem;
+
+    color: white;
+    background: transparent;
+
+    border: none;
+
+    cursor: pointer;
+
+    opacity: 0.75;
+
+    transition: 0.3s;
+}
+
+.join__back:hover {
+    opacity: 1;
+}
+
+.register__icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.register h2 {
+    font-family: "Cinzel", serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.register__text {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.register__input {
+    width: 100%;
+    max-width: 360px;
+
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 1rem;
+
+    text-align: center;
+
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+
+    outline: none;
+}
+
+.register__input:focus {
+    border-color: #d4af37;
+}
+
+.partner__icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.partner h2 {
+    font-family: "Cinzel", serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.partner__text {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none;
+}
+
+#revealPanel {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+#revealPanel h3 {
+    margin-bottom: 0.75rem;
+}
+
+#revealPanel > p {
+    line-height: 1.6;
+}
+
+.reveal__stage {
+    position: relative;
+    width: min(240px, 100%);
+    aspect-ratio: 1;
+    margin: 2rem auto;
+}
+
+/* La flèche reste fixe pendant la rotation. */
+.reveal__stage::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 26px solid #f7d774;
+}
+
+.reveal__wheel {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+
+    border: 7px solid #d4af37;
+    border-radius: 50%;
+
+    background: repeating-conic-gradient(
+        #a4161a 0deg 45deg,
+        #145a32 45deg 90deg
+    );
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.3),
+        0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+.reveal__center {
+    display: grid;
+    place-items: center;
+    width: 36%;
+    aspect-ratio: 1;
+
+    font-size: 2.5rem;
+    background: #fff5dc;
+    border: 4px solid #d4af37;
+    border-radius: 50%;
+}
+
+#revealButton:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    background: #a4161a;
+}
+
+#revealStatus {
+    margin-top: 1rem;
+    min-height: 1.6em;
+}
+
+.christmas-sparkles {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.christmas-sparkles span {
+    position: absolute;
+    top: -3rem;
+
+    font-size: var(--size);
+    color: #f7d774;
+    text-shadow: 0 0 12px rgba(247, 215, 116, 0.5);
+
+    opacity: 0;
+
+    animation: christmas-fall var(--duration) linear forwards;
+    animation-delay: var(--delay);
+}
+
+@keyframes christmas-fall {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    10%, 80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translate3d(var(--drift), calc(100vh + 6rem), 0)
+            rotate(200deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .christmas-sparkles {
+        display: none;
+    }
+}
+
+main {
+    padding: 1.5rem 0;
+}
+
+#drawResults {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+#giftResultsStatus {
+    margin: 1rem 0;
+    line-height: 1.6;
+}
+
+#giftRecipients {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+#giftRecipients article {
+    min-width: 0;
+    padding: 1.5rem;
+    text-align: left;
+    overflow-wrap: anywhere;
+
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(212, 175, 55, 0.55);
+    border-radius: 18px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+#giftRecipients h4 {
+    margin-bottom: 1rem;
+    font-family: "Cinzel", serif;
+    font-size: 1.25rem;
+    color: #f7d774;
+}
+
+#giftRecipients h4::before {
+    content: "🎁 ";
+}
+
+#giftRecipients ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    list-style-position: outside;
+}
+
+#giftRecipients li {
+    line-height: 1.6;
+}
+
+#giftRecipients li + li {
+    margin-top: 0.5rem;
+}
+
+#previewChristmasSound {
+    max-width: 100%;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 560px) {
+
+    .summary {
+        padding: 2rem 1rem;
+    }
+
+    .summary h2 {
+        font-size: 1.6rem;
+    }
+
+    #giftRecipients {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.summary__group {
+    display: inline-block;
+
+    margin-bottom: 1.25rem;
+    padding: 0.4rem 1rem;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #f7d774;
+
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 50px;
+}
