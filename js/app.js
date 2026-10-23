@@ -1413,6 +1413,8 @@ demoRevealButton.addEventListener("click", async function () {
 
     try {
 
+        await prepareChristmasAudio();
+
         const reduceMotion = window.matchMedia(
             "(prefers-reduced-motion: reduce)"
         ).matches;
@@ -1440,6 +1442,7 @@ demoRevealButton.addEventListener("click", async function () {
         demoStatus.textContent =
             "Voici un exemple de découverte. Aucun véritable tirage n’a été effectué.";
 
+        playChristmasChime();
         launchChristmasSparkles();
 
         demoResults.focus();
