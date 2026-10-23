@@ -54,6 +54,14 @@ const revealPanel = document.getElementById("revealPanel");
 const revealWheel = document.getElementById("revealWheel");
 const revealButton = document.getElementById("revealButton");
 const revealStatus = document.getElementById("revealStatus");
+const demoButton = document.getElementById("demoButton");
+const demoSection = document.getElementById("demoSection");
+const demoTitle = document.getElementById("demoTitle");
+const demoBackButton = document.getElementById("demoBackButton");
+const demoWheel = document.getElementById("demoWheel");
+const demoRevealButton = document.getElementById("demoRevealButton");
+const demoStatus = document.getElementById("demoStatus");
+const demoResults = document.getElementById("demoResults");
 const organizerDashboard =
     document.getElementById("organizerDashboard");
 
@@ -1362,6 +1370,96 @@ christmasSoundEnabled.addEventListener("change", function () {
     } catch (error) {
 
         console.warn("Préférence sonore non enregistrée :", error);
+
+    }
+
+});
+
+demoButton.addEventListener("click", function () {
+
+    heroSection.classList.add("hidden");
+    demoSection.classList.remove("hidden");
+    demoResults.classList.add("hidden");
+    demoStatus.textContent = "";
+    demoRevealButton.disabled = false;
+    demoRevealButton.textContent = "Découvrir mes deux personnes";
+    demoTitle.focus();
+
+});
+
+demoBackButton.addEventListener("click", function () {
+
+    demoSection.classList.add("hidden");
+    heroSection.classList.remove("hidden");
+
+    demoButton.focus();
+
+});
+
+demoRevealButton.addEventListener("click", async function () {
+
+    if (demoRevealButton.disabled) {
+        return;
+    }
+
+    demoRevealButton.disabled = true;
+    demoBackButton.disabled = true;
+
+    demoRevealButton.textContent = "La surprise arrive…";
+    demoStatus.textContent = "Découverte de tes destinataires fictifs…";
+    demoResults.classList.add("hidden");
+
+    let animation = null;
+
+    try {
+
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        if (!reduceMotion) {
+
+            animation = demoWheel.animate(
+                [
+                    { transform: "rotate(0deg)" },
+                    { transform: "rotate(1800deg)" }
+                ],
+                {
+                    duration: 4000,
+                    easing: "cubic-bezier(0.12, 0.75, 0.12, 1)",
+                    fill: "forwards"
+                }
+            );
+
+            await animation.finished;
+
+        }
+
+        demoResults.classList.remove("hidden");
+
+        demoStatus.textContent =
+            "Voici un exemple de découverte. Aucun véritable tirage n’a été effectué.";
+
+        launchChristmasSparkles();
+
+        demoResults.focus();
+
+    } catch (error) {
+
+        console.error("Erreur animation de démonstration :", error);
+
+        demoStatus.textContent =
+            "La démonstration a été interrompue. Tu peux réessayer.";
+
+    } finally {
+
+        if (animation) {
+            animation.cancel();
+        }
+
+        demoRevealButton.disabled = false;
+        demoBackButton.disabled = false;
+        demoRevealButton.textContent = "Rejouer la démo 🎡";
 
     }
 

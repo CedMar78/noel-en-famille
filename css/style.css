@@ -37,7 +37,8 @@ main {
 .register,
 .wishes,
 .partner,
-.summary
+.summary,
+.demo
 
 {
     width: 90%;
@@ -513,4 +514,45 @@ main {
     background: rgba(212, 175, 55, 0.1);
     border: 1px solid rgba(212, 175, 55, 0.5);
     border-radius: 50px;
+}
+
+.demo h2 {
+    font-family: "Cinzel", serif;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    margin-bottom: 1rem;
+}
+
+#demoStatus {
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+
+#demoResults {
+    margin-top: 2rem;
+}
+
+#demoResults > p {
+    margin: 0.75rem 0 1.5rem;
+    line-height: 1.6;
+}
+
+.demo__recipient {
+    margin-top: 1rem;
+    padding: 1.25rem;
+    text-align: left;
+    overflow-wrap: anywhere;
+
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(212, 175, 55, 0.55);
+    border-radius: 18px;
+}
+
+.demo__recipient h4 {
+    margin-bottom: 0.75rem;
+    color: #f7d774;
+}
+
+.demo__recipient ul {
+    padding-left: 1.25rem;
+    line-height: 1.8;
 }

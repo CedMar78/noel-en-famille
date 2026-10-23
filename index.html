@@ -33,6 +33,10 @@
                     Rejoindre ma Famille
                 </button>
 
+                <button class="join__back" id="demoButton" type="button">
+    Découvrir la démo 🎡
+</button>
+
             </section>
             <section class="join hidden">
                 <p class="join__icon">🎁</p>
@@ -319,6 +323,73 @@
 </button>
 
 </div>
+
+</section>
+
+<section class="demo hidden" id="demoSection">
+
+    <p class="hero__icon">🎄</p>
+
+    <h2 id="demoTitle" tabindex="-1">
+        Découvre Noël en famille
+    </h2>
+
+    <p class="hero__subtitle">
+        Démonstration pour mon portfolio BTS, avec des personnages
+        et des idées cadeaux fictifs.
+    </p>
+
+    <p>
+        Ici, tu pourras découvrir l’animation de la roue
+        et l’affichage des deux destinataires.
+    </p>
+
+    <div class="reveal__stage" aria-hidden="true">
+
+        <div class="reveal__wheel" id="demoWheel">
+            <span class="reveal__center">🎁</span>
+        </div>
+
+    </div>
+
+    <button
+        class="partner__button"
+        id="demoRevealButton"
+        type="button"
+        disabled
+    >
+        Découvrir mes deux personnes
+    </button>
+
+<p id="demoStatus" role="status" aria-live="polite"></p>
+
+<div id="demoResults" class="hidden" tabindex="-1">
+
+    <h3>À toi de gâter… 🎁</h3>
+
+    <p>Exemple de résultat avec des personnages fictifs.</p>
+
+    <article class="demo__recipient">
+        <h4>🎁 Léa</h4>
+        <ul>
+            <li>Un roman policier</li>
+            <li>Un puzzle de 1 000 pièces</li>
+        </ul>
+    </article>
+
+    <article class="demo__recipient">
+        <h4>🎁 Hugo</h4>
+        <ul>
+            <li>Un jeu de société</li>
+            <li>Un mug pour son chocolat chaud</li>
+        </ul>
+    </article>
+
+</div>
+
+    <button class="join__back" id="demoBackButton" type="button">
+        ← Retour à l’accueil
+    </button>
 
 </section>
 
