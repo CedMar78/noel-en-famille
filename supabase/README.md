@@ -32,21 +32,22 @@ La transaction permet d’appliquer l’ensemble, y compris les restrictions d�
 ### Ordre des fonctions
 
 1. `find_group_by_invite_code.sql`
-2. `list_group_partner_options.sql`
-3. `choose_partner.sql`
-4. `remove_partner.sql`
-5. `complete_my_registration.sql`
-6. `get_my_registration.sql`
-7. `get_group_draw_status.sql`
-8. `get_my_gift_recipients.sql`
-9. `confirm_gift_reveal.sql`
-10. `get_group_registration_status.sql`
-11. `get_group_registration_progress.sql`
-12. `check_group_before_draw.sql`
-13. `compute_gift_draw.sql`
-14. `draw_group.sql`
-15. `guard_members_after_draw.sql`
-16. `require_completed_registrations.sql`
+2. `register_member_by_invite_code.sql`
+3. `list_group_partner_options.sql`
+4. `choose_partner.sql`
+5. `remove_partner.sql`
+6. `complete_my_registration.sql`
+7. `get_my_registration.sql`
+8. `get_group_draw_status.sql`
+9. `get_my_gift_recipients.sql`
+10. `confirm_gift_reveal.sql`
+11. `get_group_registration_status.sql`
+12. `get_group_registration_progress.sql`
+13. `check_group_before_draw.sql`
+14. `compute_gift_draw.sql`
+15. `draw_group.sql`
+16. `guard_members_after_draw.sql`
+17. `require_completed_registrations.sql`
 
 ## Configuration complémentaire
 

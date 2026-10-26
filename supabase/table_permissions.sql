@@ -34,3 +34,17 @@ ON TABLE
     public.wishes,
     public.gift_assignments
 TO postgres, service_role;
+
+-- Les inscriptions passent par la fonction qui vérifie le code.
+REVOKE INSERT
+ON TABLE public.members
+FROM PUBLIC, anon, authenticated;
+
+-- Limiter les modifications directes des inscriptions.
+REVOKE UPDATE
+ON TABLE public.members
+FROM PUBLIC, anon, authenticated;
+
+GRANT UPDATE (first_name, has_partner)
+ON TABLE public.members
+TO authenticated;

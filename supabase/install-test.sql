@@ -142,6 +142,61 @@ AS $function$
 $function$;
 
 
+-- Fichier : functions/register_member_by_invite_code.sql
+CREATE OR REPLACE FUNCTION public.register_member_by_invite_code(
+    p_invite_code text,
+    p_first_name text
+)
+RETURNS TABLE (
+    id uuid,
+    has_partner boolean,
+    partner_id uuid
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path TO ''
+AS $function$
+DECLARE
+    current_user_id uuid := auth.uid();
+    selected_group_id uuid;
+BEGIN
+    IF current_user_id IS NULL THEN
+        RAISE EXCEPTION 'Une connexion est nécessaire.';
+    END IF;
+
+    IF p_first_name IS NULL OR trim(p_first_name) = '' THEN
+        RAISE EXCEPTION 'Renseigne ton prénom.';
+    END IF;
+
+    SELECT g.id
+    INTO selected_group_id
+    FROM public.groups AS g
+    WHERE upper(g.invite_code) = upper(trim(p_invite_code))
+    LIMIT 1;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Code d’invitation incorrect.';
+    END IF;
+
+    RETURN QUERY
+    INSERT INTO public.members AS m (
+        group_id,
+        user_id,
+        first_name
+    )
+    VALUES (
+        selected_group_id,
+        current_user_id,
+        trim(p_first_name)
+    )
+    ON CONFLICT (user_id, group_id)
+    DO UPDATE SET first_name = EXCLUDED.first_name
+    RETURNING m.id, m.has_partner, m.partner_id;
+END;
+$function$;
+
+
+
 -- Fichier : functions/list_group_partner_options.sql
 CREATE OR REPLACE FUNCTION public.list_group_partner_options(p_group_id uuid)
  RETURNS TABLE(id uuid, first_name text)
@@ -1281,6 +1336,16 @@ GRANT EXECUTE
 ON FUNCTION public.require_completed_registrations()
 TO postgres, service_role;
 
+-- Autorisations de l'inscription par code d'invitation.
+
+REVOKE ALL
+ON FUNCTION public.register_member_by_invite_code(text, text)
+FROM PUBLIC, anon;
+
+GRANT EXECUTE
+ON FUNCTION public.register_member_by_invite_code(text, text)
+TO authenticated, postgres, service_role;
+
 -- Fichier : table_permissions.sql
 -- Copie des autorisations actuelles sur les tables.
 -- À appliquer après tables.sql.
@@ -1318,6 +1383,20 @@ ON TABLE
     public.wishes,
     public.gift_assignments
 TO postgres, service_role;
+
+-- Les inscriptions passent par la fonction qui vérifie le code.
+REVOKE INSERT
+ON TABLE public.members
+FROM PUBLIC, anon, authenticated;
+
+-- Limiter les modifications directes des inscriptions.
+REVOKE UPDATE
+ON TABLE public.members
+FROM PUBLIC, anon, authenticated;
+
+GRANT UPDATE (first_name, has_partner)
+ON TABLE public.members
+TO authenticated;
 
 -- Fichier : triggers.sql
 -- À appliquer après la création des tables et des fonctions.

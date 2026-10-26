@@ -160,3 +160,13 @@ FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE
 ON FUNCTION public.require_completed_registrations()
 TO postgres, service_role;
+
+-- Autorisations de l'inscription par code d'invitation.
+
+REVOKE ALL
+ON FUNCTION public.register_member_by_invite_code(text, text)
+FROM PUBLIC, anon;
+
+GRANT EXECUTE
+ON FUNCTION public.register_member_by_invite_code(text, text)
+TO authenticated, postgres, service_role;
