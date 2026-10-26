@@ -52,8 +52,25 @@ Ce projet me permet de travailler :
 - la publication d’une application web.
 Le développement est réalisé étape par étape avec une assistance pédagogique par IA, puis intégré et vérifié manuellement.
 ## 📌 État du projet
-Le projet est en cours d’amélioration.
 
-L’application utilise actuellement une authentification anonyme : retrouver son inscription dépend de la conservation de la session dans le navigateur utilisé. La récupération d’accès par email reste à mettre en place.
+Le parcours principal est fonctionnel et le projet continue d’être amélioré.
 
-Le fonctionnement complet nécessite la configuration Supabase associée, avec ses tables, ses politiques d’accès et ses fonctions SQL. Ces éléments ne sont pas encore fournis sous forme de scripts d’installation dans ce dépôt.
+L’inscription commence avec une session anonyme. Chaque participant peut ensuite associer et confirmer son adresse email pour retrouver ses inscriptions depuis un autre navigateur ou appareil, grâce à un code de connexion reçu par email.
+
+Sans adresse email confirmée, retrouver son inscription dépend de la conservation de la session initiale.
+
+## 🗄️ Installation et base de données
+
+Le dossier [supabase](supabase/README.md) contient les tables, les fonctions SQL, les politiques RLS, les permissions et les déclencheurs, ainsi que leur ordre d’installation.
+
+Une première installation et le parcours principal ont été vérifiés sur un projet Supabase vierge. Le script a ensuite été actualisé avec une dix-septième fonction et des restrictions d’accès supplémentaires ; cette version complète reste à réinstaller sur une base vierge.
+
+La configuration de l’authentification, des emails et des groupes nécessite des réglages complémentaires décrits dans le guide.
+
+## 🧪 Vérifications
+
+Les scénarios réalisés et leurs résultats sont consignés dans [les tests manuels](docs/tests-manuels.md).
+
+Ils couvrent notamment la connexion par email, les couples, le tirage et plusieurs contrôles d’accès côté serveur.
+
+Ces vérifications ne constituent pas un audit exhaustif de sécurité.
