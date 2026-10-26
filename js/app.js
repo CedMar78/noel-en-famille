@@ -1481,3 +1481,337 @@ demoRevealButton.addEventListener("click", async function () {
     }
 
 });
+
+const accountEmailInput =
+    document.getElementById("accountEmail");
+
+const sendAccountCodeButton =
+    document.getElementById("sendAccountCodeButton");
+
+const accountCodePanel =
+    document.getElementById("accountCodePanel");
+
+const accountEmailStatus =
+    document.getElementById("accountEmailStatus");
+
+let pendingAccountEmail = "";
+let pendingAccountUserId = null;
+
+sendAccountCodeButton.disabled = false;
+
+sendAccountCodeButton.addEventListener("click", async function () {
+    if (!accountEmailInput.reportValidity()) {
+        return;
+    }
+
+    const email = accountEmailInput.value.trim();
+
+    if (!email) {
+        accountEmailStatus.textContent = "Renseigne ton adresse email.";
+        return;
+    }
+
+    sendAccountCodeButton.disabled = true;
+    accountEmailStatus.textContent = "Envoi du code…";
+
+    try {
+        const { data: userData, error: userError } =
+            await supabaseClient.auth.getUser();
+
+        if (userError || !userData.user) {
+            throw new Error("Ta session est introuvable. Recharge la page.");
+        }
+
+        if (!userData.user.is_anonymous) {
+            accountEmailStatus.textContent =
+                "Ton compte possède déjà un moyen de connexion.";
+            return;
+        }
+
+        const { error } = await supabaseClient.auth.updateUser({
+            email: email
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        pendingAccountEmail = email;
+        pendingAccountUserId = userData.user.id;
+
+        accountEmailInput.readOnly = true;
+        accountCodePanel.classList.remove("hidden");
+
+        accountEmailStatus.textContent =
+            "Code envoyé ! Consulte ta boîte mail et les courriers indésirables.";
+
+    } catch (error) {
+        console.error("Erreur envoi du code email :", error);
+
+        accountEmailStatus.textContent =
+            "Impossible d’envoyer le code. Vérifie ton adresse et réessaie.";
+
+    } finally {
+        sendAccountCodeButton.disabled = false;
+    }
+});
+const accountEmailCodeInput =
+    document.getElementById("accountEmailCode");
+
+const verifyAccountCodeButton =
+    document.getElementById("verifyAccountCodeButton");
+
+verifyAccountCodeButton.disabled = false;
+
+verifyAccountCodeButton.addEventListener("click", async function () {
+    const token = accountEmailCodeInput.value.trim();
+
+    if (!pendingAccountEmail || !pendingAccountUserId) {
+        accountEmailStatus.textContent =
+            "Demande d’abord un code depuis cette page.";
+        return;
+    }
+
+    if (!token) {
+        accountEmailStatus.textContent = "Saisis le code reçu par email.";
+        return;
+    }
+
+    verifyAccountCodeButton.disabled = true;
+    sendAccountCodeButton.disabled = true;
+    accountEmailStatus.textContent = "Vérification…";
+
+    let confirmed = false;
+
+    try {
+        const { data: current, error: sessionError } =
+            await supabaseClient.auth.getUser();
+
+        if (
+            sessionError ||
+            current.user?.id !== pendingAccountUserId
+        ) {
+            throw new Error("La session a changé.");
+        }
+
+        const { error } = await supabaseClient.auth.verifyOtp({
+            email: pendingAccountEmail,
+            token: token,
+            type: "email_change"
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        const { data: verified, error: verifiedError } =
+            await supabaseClient.auth.getUser();
+
+        if (
+            verifiedError ||
+            verified.user?.id !== pendingAccountUserId ||
+            verified.user?.is_anonymous !== false ||
+            verified.user?.email?.toLowerCase() !==
+                pendingAccountEmail.toLowerCase()
+        ) {
+            throw new Error("La confirmation du compte reste à vérifier.");
+        }
+
+        confirmed = true;
+        accountEmailCodeInput.value = "";
+        accountCodePanel.classList.add("hidden");
+
+        accountEmailStatus.textContent =
+            "Adresse confirmée ! Ton compte et tes inscriptions sont conservés 🎄";
+
+    } catch (error) {
+        console.error("Erreur confirmation de l’email :", error);
+
+        accountEmailStatus.textContent =
+            "Confirmation impossible. Vérifie le dernier code reçu. " +
+            "S’il a expiré, demande un nouveau code.";
+
+    } finally {
+        verifyAccountCodeButton.disabled = confirmed;
+        sendAccountCodeButton.disabled = confirmed;
+    }
+});
+
+const openLoginButton =
+    document.getElementById("openLoginButton");
+
+const loginSection =
+    document.getElementById("loginSection");
+
+const loginBackButton =
+    document.getElementById("loginBackButton");
+
+const loginEmailInput =
+    document.getElementById("loginEmail");
+
+openLoginButton.addEventListener("click", function () {
+    heroSection.classList.add("hidden");
+    loginSection.classList.remove("hidden");
+
+    loginEmailInput.focus();
+});
+
+loginBackButton.addEventListener("click", function () {
+    loginSection.classList.add("hidden");
+    heroSection.classList.remove("hidden");
+
+    openLoginButton.focus();
+});
+
+const sendLoginCodeButton =
+    document.getElementById("sendLoginCodeButton");
+
+const loginCodePanel =
+    document.getElementById("loginCodePanel");
+
+const loginStatus =
+    document.getElementById("loginStatus");
+
+let pendingLoginEmail = "";
+
+sendLoginCodeButton.disabled = false;
+
+sendLoginCodeButton.addEventListener("click", async function () {
+    if (!loginEmailInput.reportValidity()) {
+        return;
+    }
+
+    const email = loginEmailInput.value.trim();
+
+    if (!email) {
+        loginStatus.textContent = "Renseigne ton adresse email.";
+        return;
+    }
+
+    sendLoginCodeButton.disabled = true;
+    loginStatus.textContent = "Envoi du code…";
+
+    try {
+        const { error } = await supabaseClient.auth.signInWithOtp({
+            email: email,
+            options: {
+                shouldCreateUser: false
+            }
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        pendingLoginEmail = email;
+        loginEmailInput.readOnly = true;
+
+        loginCodePanel.classList.remove("hidden");
+
+        loginStatus.textContent =
+            "Si cette adresse correspond à un compte, " +
+            "un code de connexion a été envoyé. " +
+            "Consulte aussi les courriers indésirables.";
+
+        setTimeout(function () {
+            sendLoginCodeButton.disabled = false;
+        }, 60000);
+
+    } catch (error) {
+        console.error("Erreur envoi du code de connexion :", error);
+
+        loginStatus.textContent =
+            "Envoi impossible. Vérifie ton adresse ou attends " +
+            "un instant avant de réessayer.";
+
+        sendLoginCodeButton.disabled = false;
+    }
+});
+
+const loginCodeInput =
+    document.getElementById("loginCode");
+
+const verifyLoginCodeButton =
+    document.getElementById("verifyLoginCodeButton");
+
+verifyLoginCodeButton.disabled = false;
+
+verifyLoginCodeButton.addEventListener("click", async function () {
+    const token = loginCodeInput.value.trim();
+
+    if (!pendingLoginEmail || !token) {
+        loginStatus.textContent =
+            "Demande un code, puis saisis le dernier code reçu.";
+        return;
+    }
+
+    verifyLoginCodeButton.disabled = true;
+    sendLoginCodeButton.disabled = true;
+    loginBackButton.disabled = true;
+
+    loginStatus.textContent = "Connexion…";
+
+    let connected = false;
+
+    try {
+        const { data, error } =
+            await supabaseClient.auth.verifyOtp({
+                email: pendingLoginEmail,
+                token: token,
+                type: "email"
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        if (
+            !data.session ||
+            !data.user ||
+            data.user.is_anonymous !== false ||
+            data.user.email?.toLowerCase() !==
+                pendingLoginEmail.toLowerCase()
+        ) {
+            throw new Error("La connexion reste à vérifier.");
+        }
+
+        Object.assign(participant, {
+            groupId: null,
+            groupName: "",
+            memberId: null,
+            firstName: "",
+            wishes: [],
+            hasPartner: null,
+            partnerId: null,
+            partnerName: "",
+            registrationCompletedAt: null
+        });
+
+        connected = true;
+        pendingLoginEmail = "";
+        loginCodeInput.value = "";
+
+        loginSection.classList.add("hidden");
+        joinSection.classList.remove("hidden");
+
+        document.getElementById("codeError")
+            .classList.add("hidden");
+
+        document.getElementById("familyCode").focus();
+
+    } catch (error) {
+        console.error("Erreur connexion par code :", error);
+
+        loginStatus.textContent =
+            "Connexion impossible. Vérifie le dernier code reçu. " +
+            "S’il a expiré, demande un nouveau code.";
+
+    } finally {
+        verifyLoginCodeButton.disabled = false;
+        loginBackButton.disabled = false;
+
+        if (!connected) {
+            sendLoginCodeButton.disabled = false;
+        }
+    }
+});

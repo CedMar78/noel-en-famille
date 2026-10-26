@@ -37,6 +37,14 @@
     Découvrir la démo 🎡
 </button>
 
+<button
+    class="join__back"
+    id="openLoginButton"
+    type="button"
+>
+    Déjà inscrit ? Me connecter 📧
+</button>
+
             </section>
             <section class="join hidden">
                 <p class="join__icon">🎁</p>
@@ -239,6 +247,62 @@
         <span id="summaryPartner"></span>
     </p>
 
+<div id="accountEmailPanel">
+
+    <h3>Retrouver mon inscription 📧</h3>
+
+    <p>
+        Associe ton adresse email pour retrouver tes inscriptions
+        sur un autre navigateur ou appareil.
+    </p>
+
+    <label for="accountEmail">Ton adresse email</label>
+
+    <input
+        class="join__input"
+        id="accountEmail"
+        type="email"
+        autocomplete="email"
+        placeholder="Ton adresse email"
+    >
+
+    <button
+        class="partner__button"
+        id="sendAccountCodeButton"
+        type="button"
+        disabled
+    >
+        Recevoir mon code
+    </button>
+
+    <div id="accountCodePanel" class="hidden">
+
+        <label for="accountEmailCode">Code reçu par email</label>
+
+        <input
+            class="join__input"
+            id="accountEmailCode"
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            placeholder="Ton code"
+        >
+
+        <button
+            class="partner__button"
+            id="verifyAccountCodeButton"
+            type="button"
+            disabled
+        >
+            Confirmer mon adresse
+        </button>
+
+    </div>
+
+    <p id="accountEmailStatus" role="status" aria-live="polite"></p>
+
+</div>
+
     <div id="organizerDashboard" class="hidden">
 
     <h3>Les inscriptions du groupe 👨‍👩‍👧‍👦</h3>
@@ -396,6 +460,71 @@
 </div>
 
     <button class="join__back" id="demoBackButton" type="button">
+        ← Retour à l’accueil
+    </button>
+
+</section>
+
+<section class="join hidden" id="loginSection">
+
+    <h2>Retrouver mes inscriptions 🎄</h2>
+
+    <p>
+        Utilise l’adresse email que tu as confirmée
+        lors de ton inscription.
+    </p>
+
+    <label for="loginEmail">Ton adresse email</label>
+
+    <input
+        class="join__input"
+        id="loginEmail"
+        type="email"
+        autocomplete="email"
+        placeholder="Ton adresse email"
+        required
+    >
+
+    <button
+        class="join__button"
+        id="sendLoginCodeButton"
+        type="button"
+        disabled
+    >
+        Recevoir mon code
+    </button>
+
+    <div id="loginCodePanel" class="hidden">
+
+        <label for="loginCode">Code reçu par email</label>
+
+        <input
+            class="join__input"
+            id="loginCode"
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            placeholder="Ton code"
+        >
+
+        <button
+            class="join__button"
+            id="verifyLoginCodeButton"
+            type="button"
+            disabled
+        >
+            Me connecter
+        </button>
+
+    </div>
+
+    <p id="loginStatus" role="status" aria-live="polite"></p>
+
+    <button
+        class="join__back"
+        id="loginBackButton"
+        type="button"
+    >
         ← Retour à l’accueil
     </button>
 
