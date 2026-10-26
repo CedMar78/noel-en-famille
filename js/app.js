@@ -313,20 +313,16 @@ registerButton.addEventListener("click", async function () {
         return;
     }
 
-    const { data, error } = await supabaseClient
-        .from("members")
-        .upsert(
-            {
-                user_id: user.id,
-                group_id: participant.groupId,
-                first_name: firstName
-            },
-            {
-                onConflict: "user_id,group_id"
-            }
-        )
-                .select("id, has_partner, partner_id")
-        .single();
+const { data, error } = await supabaseClient
+    .rpc("register_member_by_invite_code", {
+        p_invite_code: document
+            .getElementById("familyCode")
+            .value
+            .trim(),
+
+        p_first_name: firstName
+    })
+    .single();
 
 if (error) {
     console.error("Erreur création du membre :", error);
