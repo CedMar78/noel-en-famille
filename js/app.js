@@ -377,6 +377,7 @@ saveWishesButton.addEventListener("click", async function () {
     });
 
     if (wishes.length < 2) {
+        wishesError.textContent = "Ajoute au moins 2 idées cadeaux.";
         wishesError.classList.remove("hidden");
         return;
     }
@@ -391,54 +392,36 @@ saveWishesButton.addEventListener("click", async function () {
     saveWishesButton.disabled = true;
     saveWishesButton.textContent = "Enregistrement...";
 
-    // On supprime d'abord les anciens souhaits de ce membre.
-    // Très pratique pendant nos tests et si l'utilisateur modifie sa liste.
-    const { error: deleteError } = await supabaseClient
-        .from("wishes")
-        .delete()
-        .eq("member_id", participant.memberId);
-
-    if (deleteError) {
-
-        console.error(
-            "Erreur suppression des anciens souhaits :",
-            deleteError
-        );
-
-        saveWishesButton.disabled = false;
-        saveWishesButton.textContent = "Enregistrer mes idées";
-
-        return;
+const { data, error } = await supabaseClient.rpc(
+    "save_my_wishes",
+    {
+        p_group_id: participant.groupId,
+        p_wishes: wishes
     }
+);
 
-    const wishesToInsert = wishes.map(function (wish) {
+saveWishesButton.disabled = false;
+saveWishesButton.textContent = "Enregistrer mes idées";
 
-        return {
-            member_id: participant.memberId,
-            label: wish
-        };
+if (error) {
+    console.error("Erreur enregistrement des idées :", error);
 
-    });
+    wishesError.textContent =
+        error.message || "Impossible d’enregistrer tes idées.";
 
-    const { data, error } = await supabaseClient
-        .from("wishes")
-        .insert(wishesToInsert)
-        .select("id, label");
+    wishesError.classList.remove("hidden");
 
-    saveWishesButton.disabled = false;
-    saveWishesButton.textContent = "Enregistrer mes idées";
-
-    if (error) {
-
-        console.error(
-            "Erreur enregistrement des souhaits :",
-            error
-        );
-
-        return;
-    }
+    return;
+}
 
     participant.wishes = wishes;
+
+    if (editingWishes) {
+    editingWishes = false;
+    wishesSection.classList.add("hidden");
+    showSummary();
+    return;
+}
 
     console.log(
         "Souhaits enregistrés :",
@@ -624,6 +607,8 @@ async function loadOrganizerDashboard() {
 
 async function loadDrawStatus() {
 
+    editWishesButton.disabled = true;
+
         organizerDashboard.classList.add("hidden");
 
         revealPanel.classList.add("hidden");
@@ -646,7 +631,7 @@ async function loadDrawStatus() {
         if (error) {
             throw error;
         }
-
+editWishesButton.disabled = Boolean(data.drawn_at);
         let registrationProgress = null;
 
         if (data.is_organizer) {
@@ -1852,3 +1837,25 @@ async function refreshAccountEmailPanel() {
             "Impossible de vérifier ton accès pour le moment. Recharge la page.";
     }
 }
+
+const editWishesButton =
+    document.getElementById("editWishesButton");
+
+let editingWishes = false;
+
+editWishesButton.addEventListener("click", function () {
+    editingWishes = true;
+
+    wish1Input.value = participant.wishes[0] || "";
+    wish2Input.value = participant.wishes[1] || "";
+    wish3Input.value = participant.wishes[2] || "";
+
+    wishesTitle.textContent =
+        `Les idées cadeaux de ${participant.firstName} 🎁`;
+
+    wishesError.classList.add("hidden");
+    summarySection.classList.add("hidden");
+    wishesSection.classList.remove("hidden");
+
+    wish1Input.focus();
+});
