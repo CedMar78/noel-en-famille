@@ -730,6 +730,8 @@ async function loadDrawStatus() {
 
 function showSummary() {
 
+    refreshAccountEmailPanel();
+
     partnerSection.classList.add("hidden");
     summarySection.classList.remove("hidden");
 
@@ -1624,6 +1626,8 @@ verifyAccountCodeButton.addEventListener("click", async function () {
         accountEmailStatus.textContent =
             "Adresse confirmée ! Ton compte et tes inscriptions sont conservés 🎄";
 
+            await refreshAccountEmailPanel();
+
     } catch (error) {
         console.error("Erreur confirmation de l’email :", error);
 
@@ -1815,3 +1819,40 @@ verifyLoginCodeButton.addEventListener("click", async function () {
         }
     }
 });
+
+async function refreshAccountEmailPanel() {
+    const panel = document.getElementById("accountEmailPanel");
+    const message = document.getElementById("accountSavedMessage");
+
+    panel.classList.add("hidden");
+    message.classList.remove("hidden");
+    message.textContent = "Vérification de ton accès…";
+
+    try {
+        const { data, error } = await supabaseClient.auth.getUser();
+
+        if (error || !data.user) {
+            throw error || new Error("Session introuvable.");
+        }
+
+        const emailConfirmed =
+            data.user.is_anonymous === false &&
+            Boolean(data.user.email) &&
+            Boolean(data.user.email_confirmed_at);
+
+        if (emailConfirmed) {
+            message.textContent =
+                "Ton accès est sauvegardé ✅ " +
+                "Tu peux retrouver tes inscriptions avec ton adresse email.";
+        } else {
+            message.classList.add("hidden");
+            panel.classList.remove("hidden");
+        }
+
+    } catch (error) {
+        console.error("Erreur vérification de l’accès :", error);
+
+        message.textContent =
+            "Impossible de vérifier ton accès pour le moment. Recharge la page.";
+    }
+}
