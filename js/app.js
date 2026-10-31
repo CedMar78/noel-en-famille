@@ -451,8 +451,7 @@ async function loadMyGiftRecipients() {
     try {
 
         const { data, error } = await supabaseClient.rpc(
-            "get_my_gift_recipients",
-            {
+"get_my_gift_recipients_with_reservations",            {
                 p_group_id: participant.groupId
             }
         );
@@ -473,13 +472,64 @@ async function loadMyGiftRecipients() {
 
             name.textContent = recipient.first_name;
 
-            recipient.wishes.forEach(function (wish) {
+recipient.wishes.forEach(function (wish) {
+    const item = document.createElement("li");
+    const label = document.createElement("span");
+    const status = document.createElement("span");
 
-                const item = document.createElement("li");
-                item.textContent = wish;
-                wishesList.appendChild(item);
+    item.classList.add("gift-idea");
+    label.classList.add("gift-idea__label");
+    status.classList.add("gift-idea__status");
 
-            });
+    label.textContent = wish.label;
+
+    const statusLabels = {
+        available: "Disponible",
+        mine: "Réservé par toi 🎁",
+        taken: "Déjà réservé"
+    };
+
+    status.textContent =
+        statusLabels[wish.reservation_status] || "Indisponible";
+
+    if (wish.reservation_status === "taken") {
+        item.classList.add("gift-idea--taken");
+    }
+
+  const button = document.createElement("button");
+
+button.type = "button";
+button.classList.add("gift-idea__button");
+
+const reservedByMe = wish.reservation_status === "mine";
+const available = wish.reservation_status === "available";
+
+const alreadyChosen = recipient.wishes.some(function (idea) {
+    return idea.reservation_status === "mine";
+});
+
+button.textContent = reservedByMe
+    ? "Annuler ma réservation"
+    : available
+        ? "Réserver cette idée 🎁"
+        : "Déjà réservé";
+
+button.disabled =
+    giftReservationBusy ||
+    (!available && !reservedByMe) ||
+    (available && alreadyChosen);
+
+button.addEventListener("click", function () {
+    const functionName = reservedByMe
+        ? "cancel_gift_reservation"
+        : "reserve_gift_idea";
+
+    updateGiftReservation(functionName, wish.id);
+});
+
+item.append(label, status, button);
+    wishesList.appendChild(item);
+});
 
             card.append(name, wishesList);
             giftRecipients.appendChild(card);
@@ -1859,3 +1909,53 @@ editWishesButton.addEventListener("click", function () {
 
     wish1Input.focus();
 });
+
+let giftReservationBusy = false;
+
+async function updateGiftReservation(functionName, wishId) {
+    if (giftReservationBusy) {
+        return;
+    }
+
+    giftReservationBusy = true;
+
+    giftRecipients.querySelectorAll("button").forEach(function (button) {
+        button.disabled = true;
+    });
+
+    giftResultsStatus.textContent = "Mise à jour de la réservation…";
+
+    let feedback = "";
+
+    try {
+        const { error } = await supabaseClient.rpc(functionName, {
+            p_group_id: participant.groupId,
+            p_wish_id: wishId
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        feedback = functionName === "reserve_gift_idea"
+            ? "Idée réservée pour toi 🎁"
+            : "Réservation annulée : l’idée est disponible.";
+
+    } catch (error) {
+        console.error("Erreur réservation cadeau :", error);
+
+        feedback = error.message ||
+            "Action non confirmée. Actualise les disponibilités.";
+
+    } finally {
+        giftReservationBusy = false;
+    }
+
+    const refreshed = await loadMyGiftRecipients();
+
+    if (refreshed) {
+        giftResultsStatus.textContent = feedback;
+        giftResultsStatus.setAttribute("tabindex", "-1");
+        giftResultsStatus.focus({ preventScroll: true });
+    }
+}

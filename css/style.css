@@ -556,3 +556,33 @@ main {
     padding-left: 1.25rem;
     line-height: 1.8;
 }
+
+.gift-idea__status {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.85em;
+    opacity: 0.85;
+}
+
+.gift-idea--taken .gift-idea__label {
+    opacity: 0.55;
+    text-decoration: line-through;
+}
+
+.gift-idea__button {
+    display: block;
+    margin-top: 0.6rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    font: inherit;
+    font-size: 0.85em;
+    cursor: pointer;
+}
+
+.gift-idea__button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
